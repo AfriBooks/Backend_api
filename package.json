@@ -1,0 +1,21 @@
+{
+  "name": "backend_api",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "build": "npx tsc",
+    "dev": "nodemon ./src/server.ts"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/AfriBooks/Backend_api.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/AfriBooks/Backend_api/issues"
+  },
+  "homepage": "https://github.com/AfriBooks/Backend_api#readme"
+}
