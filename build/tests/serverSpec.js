@@ -15,6 +15,14 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const supertest_1 = __importDefault(require("supertest"));
 const server_1 = __importDefault(require("../server"));
 describe('Home URL test', () => {
+    let originalTimeout;
+    beforeAll(() => __awaiter(void 0, void 0, void 0, function* () {
+        originalTimeout = jasmine.DEFAULT_TIMEOUT_INTERVAL;
+        jasmine.DEFAULT_TIMEOUT_INTERVAL = 100000;
+    }));
+    afterAll(() => {
+        jasmine.DEFAULT_TIMEOUT_INTERVAL = originalTimeout;
+    });
     it('should test the / endpoint', () => __awaiter(void 0, void 0, void 0, function* () {
         const request = (0, supertest_1.default)(server_1.default);
         const response = yield request.get('/');
