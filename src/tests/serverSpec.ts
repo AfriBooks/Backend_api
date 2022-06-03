@@ -6,12 +6,14 @@ describe('Home URL test', ()=>{
 
     beforeAll(async () => {
         originalTimeout = jasmine.DEFAULT_TIMEOUT_INTERVAL;
-        jasmine.DEFAULT_TIMEOUT_INTERVAL = 10000;
+        jasmine.DEFAULT_TIMEOUT_INTERVAL = 100000;
     });
 
     afterAll(() => {
         jasmine.DEFAULT_TIMEOUT_INTERVAL = originalTimeout;
     });
+
+   
 
  it('should test the / endpoint', async ()=>{
      const request = supertest(app);
