@@ -1,39 +1,45 @@
 {
-  "name": "backend_api",
-  "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
-  "scripts": {
-    "jasmine": "jasmine",
-    "build": "npx tsc",
-    "dev": "nodemon ./src/server.ts"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/AfriBooks/Backend_api.git"
-  },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
-  "bugs": {
-    "url": "https://github.com/AfriBooks/Backend_api/issues"
-  },
-  "homepage": "https://github.com/AfriBooks/Backend_api#readme",
-  "dependencies": {
-    "cors": "^2.8.5",
-    "express": "^4.18.1",
-    "jasmine": "^4.1.0",
-    "jasmine-spec-reporter": "^7.0.0",
-    "typescript": "^4.6.4"
-  },
-  "devDependencies": {
-    "@types/cors": "^2.8.12",
-    "@types/express": "^4.17.13",
-    "@types/jasmine": "^4.0.3",
-    "@types/node": "^17.0.35",
-    "@types/supertest": "^2.0.12",
-    "nodemon": "^2.0.16",
-    "supertest": "^6.2.3",
-    "ts-node": "^10.8.0"
-  }
+    "name": "backend_api",
+    "version": "1.0.0",
+    "description": "",
+    "main": "index.js",
+    "scripts": {
+        "start": "node src/server.ts",
+        "watch": "tsc-watch --esModuleInterop src/server.ts --outDir ./dist --onSuccess \"node ./dist/server.js\"",
+        "jasmine": "jasmine",
+        "build": "npx tsc",
+        "dev": "nodemon ./src/server.ts"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/AfriBooks/Backend_api.git"
+    },
+    "keywords": [],
+    "author": "",
+    "license": "ISC",
+    "bugs": {
+        "url": "https://github.com/AfriBooks/Backend_api/issues"
+    },
+    "homepage": "https://github.com/AfriBooks/Backend_api#readme",
+    "dependencies": {
+        "cookie-parser": "^1.4.6",
+        "cors": "^2.8.5",
+        "express": "^4.18.1",
+        "jasmine": "^4.1.0",
+        "jasmine-spec-reporter": "^7.0.0",
+        "mongoose": "^6.3.4",
+        "typescript": "^4.6.4"
+    },
+    "devDependencies": {
+        "@types/cookie-parser": "^1.4.3",
+        "@types/cors": "^2.8.12",
+        "@types/express": "^4.17.13",
+        "@types/jasmine": "^4.0.3",
+        "@types/node": "^17.0.35",
+        "@types/supertest": "^2.0.12",
+        "nodemon": "^2.0.16",
+        "supertest": "^6.2.3",
+        "ts-node": "^10.8.0",
+        "tsc-watch": "^5.0.3"
+    }
 }
