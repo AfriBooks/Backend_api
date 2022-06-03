@@ -8,7 +8,7 @@ import {
     review,
     reviewReply,
     updateBook,
-} from "../handlers/book";
+} from "../controllers/book";
 
 const bookRoutes = (app: Application) => {
     app.get("/books", getBooks);
