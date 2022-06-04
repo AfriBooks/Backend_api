@@ -11,6 +11,13 @@ export const createUser = async (req: Request, res: Response) => {
   };
 
   try {
+    if (addUser.password.length < 8) {
+      return res.json({
+        status: "error",
+        error: "Password should be at least 6 characters",
+      });
+    }
+
     const searchDb = await User.findOne({ userName: addUser.userName });
     if (searchDb) {
       return res.status(400).json({
