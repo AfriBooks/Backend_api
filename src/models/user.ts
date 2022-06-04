@@ -22,15 +22,13 @@ const userSchema = new Schema<UserData>(
 
 // Password Encrypting using Bcrypt
 const saltRounds = parseInt(process.env.saltRounds as string);
-//const pepper: string | undefined = process.env.myPlaintextPassword as string;
 
-userSchema.pre('save', async function(next){
-  if(!this.isModified('password')){
-    next()
+userSchema.pre("save", async function (next) {
+  if (!this.isModified("password")) {
+    next();
   }
- this.password = await bcrypt.hash(this.password, saltRounds)
-})
-
+  this.password = await bcrypt.hash(this.password, saltRounds);
+});
 
 const User = mongoose.model("User", userSchema);
 
