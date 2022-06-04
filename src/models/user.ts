@@ -1,3 +1,4 @@
+import bcrypt, { hash } from "bcrypt";
 import mongoose, { model, Schema } from "mongoose";
 
 export interface UserData {
@@ -18,6 +19,18 @@ const userSchema = new Schema<UserData>(
   },
   { timestamps: true }
 );
+
+// Password Encrypting using Bcrypt
+const saltRounds = parseInt(process.env.saltRounds as string);
+//const pepper: string | undefined = process.env.myPlaintextPassword as string;
+
+userSchema.pre('save', async function(next){
+  if(!this.isModified('password')){
+    next()
+  }
+ this.password = await bcrypt.hash(this.password, saltRounds)
+})
+
 
 const User = mongoose.model("User", userSchema);
 
