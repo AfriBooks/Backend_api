@@ -3,6 +3,7 @@ import cors from "cors";
 import cookieParser from "cookie-parser";
 import main from "./database";
 import bookRoutes from "./routes/book";
+import { userRoute } from "./routes/user";
 
 main().catch((err) => console.error(err));
 
@@ -15,6 +16,7 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 
 bookRoutes(app);
+userRoute(app);
 
 app.get("/", (req: Request, res: Response) => {
     res.status(200).send("Welcome to AfriBook API");
