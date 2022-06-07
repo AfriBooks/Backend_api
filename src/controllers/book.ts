@@ -108,7 +108,7 @@ export const deleteBook = async (req: Request, res: Response) => {
 
 export const updateBook = async (req: Request, res: Response) => {
     const id = req.params.id;
-    const user = req.cookies.auth_user;
+    const user = req.cookies.afribook_currentUser;
 
     if (!user) {
         return res.status(400).json("User must be logged in");
@@ -140,7 +140,7 @@ export const updateBook = async (req: Request, res: Response) => {
 export const review = async (req: Request, res: Response) => {
     const bookId = req.params.id;
     const review = req.body.review;
-    const user = req.cookies.auth_user;
+    const user = req.cookies.afribook_currentUser;
 
     try {
         const book = await Book.findById(bookId);
