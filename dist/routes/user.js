@@ -1,11 +1,8 @@
 "use strict";
 exports.__esModule = true;
-var book_1 = require("../handlers/book");
-var user_1 = require("../handlers/user");
-var testUserRoutes = function (app) {
-    app.get("/users", user_1.getUsers);
-    app.post("/users", user_1.create);
-    app.post('/login', user_1.login);
-    app.get('/users/:id/books', book_1.getBooksByUser);
+exports.userRoute = void 0;
+var user_1 = require("../controllers/user");
+var userRoute = function (app) {
+    app.post("/user", user_1.createUser);
 };
-exports["default"] = testUserRoutes;
+exports.userRoute = userRoute;

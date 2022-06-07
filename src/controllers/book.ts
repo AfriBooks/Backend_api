@@ -91,8 +91,22 @@ export const getBooksByUser = async (req: Request, res: Response) => {
 
 export const deleteBook = async (req: Request, res: Response) => {
     const id = req.params.id;
+    const user = req.cookies.auth_user;
+
+    if (!user) {
+        return res.status(400).json("User must be logged in");
+    }
 
     try {
+        const book = await Book.findById(id);
+        if (!book) {
+            return res.status(400).json({ message: "No book with that id" });
+        }
+        if (user.isAdmin !== true || user.id !== book.created_by) {
+            return res
+                .status(400)
+                .json("You can only delete books posted by you");
+        }
         await Book.findByIdAndDelete(id)
             .then((result) => {
                 res.status(200).json({ message: "Book deleted successfully" });
@@ -190,7 +204,7 @@ export const reviewReply = async (req: Request, res: Response) => {
                         "reviews._id": reviewId,
                     },
                 ],
-            },
+            }
         )
             .then((result) => {
                 res.status(200).json({ message: "Reply added", replyObject });
