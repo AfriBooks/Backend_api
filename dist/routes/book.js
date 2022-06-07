@@ -1,6 +1,6 @@
 "use strict";
 exports.__esModule = true;
-var book_1 = require("../handlers/book");
+var book_1 = require("../controllers/book");
 var bookRoutes = function (app) {
     app.get("/books", book_1.getBooks);
     app.post("/books", book_1.addBook);
