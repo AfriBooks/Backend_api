@@ -1,5 +1,9 @@
+import jwt from "jsonwebtoken";
+import dotenv from 'dotenv'
 import { Request, Response } from "express";
 import User, { UserData } from "../models/user";
+
+dotenv.config()
 
 export const createUser = async (req: Request, res: Response) => {
   const addUser: UserData = {
@@ -9,7 +13,7 @@ export const createUser = async (req: Request, res: Response) => {
   };
 
   try {
-    // const passD=  /^(?=.*[0-9])(?=.*[!@#$%^&*])[a-zA-Z0-9!@#$%^&*]{8,15}$/;
+    //const passD=  /^(?=.*[0-9])(?=.*[!@#$%^&*])[a-zA-Z0-9!@#$%^&*]{8,15}$/;
 
     if (addUser.password.length < 8) {
       return res.json({
@@ -18,8 +22,8 @@ export const createUser = async (req: Request, res: Response) => {
       });
     }
 
-    const searchDb = await User.findOne({ userName: addUser.email });
-    if (searchDb) {
+    const emailCheck = await User.findOne({ "$or": [ { email: addUser.email }] });
+    if (emailCheck) {
       return res.status(400).json({
         message:
           "This Email is already in use, please confirm the email or request retrieve password",
@@ -28,6 +32,33 @@ export const createUser = async (req: Request, res: Response) => {
     const newUser = await User.create(addUser);
     res.json(newUser);
     res.status(201);
+  } catch (error) {
+    res.status(400);
+    res.json(error);
+  }
+};
+
+export const authenticate = async (req: Request, res: Response) => {
+  try {
+    const existingUser = await User.find({
+      email: req.body.email,
+      password: req.body.password,
+    });
+
+    if (existingUser) {
+      const token = jwt.sign(
+        {
+          payload: existingUser,
+        },
+        //@ts-ignore
+        process.env.TOKEN_SECRET
+        ,
+        {
+          expiresIn: "2h",
+        }
+      );
+      res.json(token);
+    }
   } catch (error) {
     res.status(400);
     res.json(error);

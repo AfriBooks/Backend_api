@@ -1,6 +1,7 @@
 import { Application } from "express";
-import { createUser } from "../controllers/user";
+import { createUser, authenticate } from "../controllers/user";
 
 export const userRoute = (app: Application) => {
   app.post("/user", createUser);
+  app.post("/login", authenticate);
 };
