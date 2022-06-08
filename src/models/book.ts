@@ -6,7 +6,7 @@ type Book = {
     cover: string;
     price: number;
     description: string;
-    categories: Array<string>;
+    genre: string;
     created_by: string;
     reviews: Array<object>;
 };
@@ -43,7 +43,7 @@ const bookSchema = new Schema<Book>(
         cover: { type: String, trim: true },
         price: { type: Number, required: true, trim: true },
         description: { type: String, required: true, trim: true },
-        categories: [{ type: String, trim: true, lowercase: true }],
+        genre: { type: String, trim: true, lowercase: true },
         created_by: { type: String, required: true, trim: true },
         reviews: [reviewSchema],
     },
