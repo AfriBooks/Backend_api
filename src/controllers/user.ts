@@ -51,15 +51,11 @@ export const authenticate = async (req: Request, res: Response) => {
         if (existingUser) {
             res.cookie("afribook_currentUser", existingUser);
             const token = jwt.sign(
-                {
-                    payload: existingUser,
-                },
-                //@ts-ignore
+                { payload: existingUser },
                 `${process.env.TOKEN_SECRET}`,
-                {
-                    expiresIn: "2h",
-                }
+                { expiresIn: "2h" }
             );
+            res.cookie('auth_token', token);
             res.json(token);
         }
     } catch (error) {
