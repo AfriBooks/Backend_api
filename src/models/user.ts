@@ -1,5 +1,6 @@
 import bcrypt, { hash } from "bcrypt";
 import mongoose, { model, Schema } from "mongoose";
+import joi from "joi";
 
 export interface UserData {
   name: string;
@@ -26,6 +27,15 @@ userSchema.pre("save", async function (next) {
   this.password = await bcrypt.hash(this.password, saltRounds);
 });
 
-const User = mongoose.model("User", userSchema);
+const User = mongoose.model("user", userSchema);
+
+export const validate = (user:UserData) =>{
+ const Schema = joi.object({
+   name: joi.string().required(),
+   email:joi.string().email().required(),
+   password: joi.string().required()
+ })
+ return Schema.validate(user)
+}
 
 export default User;
