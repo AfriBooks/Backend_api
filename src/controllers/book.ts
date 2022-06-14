@@ -2,14 +2,23 @@ import { Request, Response } from "express";
 import Book from "../models/book";
 
 export const addBook = async (req: Request, res: Response) => {
+    const user = req.cookies.afribook_currentUser;
+    const filesArray = req.files;
+    let file = filesArray
+        ? filesArray.length > 0
+            ? //@ts-ignore
+              filesArray[0].path
+            : ""
+        : "";
+
     const new_book = {
         title: req.body.title,
         author: req.body.author,
-        cover: req.body.cover,
+        cover: file,
         price: req.body.price,
         description: req.body.description,
-        categories: req.body.categories,
-        created_by: req.body.userId,
+        genre: req.body.genre,
+        created_by: user._id,
     };
     try {
         const findDuplicate = await Book.findOne({ title: new_book.title });
@@ -91,8 +100,22 @@ export const getBooksByUser = async (req: Request, res: Response) => {
 
 export const deleteBook = async (req: Request, res: Response) => {
     const id = req.params.id;
+    const user = req.cookies.afribook_currentUser;
+
+    if (!user) {
+        return res.status(400).json("User must be logged in");
+    }
 
     try {
+        const book = await Book.findById(id);
+        if (!book) {
+            return res.status(400).json({ message: "No book with that id" });
+        }
+        if (user.isAdmin !== true || user.id !== book.created_by) {
+            return res
+                .status(400)
+                .json("You can only delete books posted by you");
+        }
         await Book.findByIdAndDelete(id)
             .then((result) => {
                 res.status(200).json({ message: "Book deleted successfully" });
@@ -108,7 +131,7 @@ export const deleteBook = async (req: Request, res: Response) => {
 
 export const updateBook = async (req: Request, res: Response) => {
     const id = req.params.id;
-    const user = req.cookies.auth_user;
+    const user = req.cookies.afribook_currentUser;
 
     if (!user) {
         return res.status(400).json("User must be logged in");
@@ -140,7 +163,7 @@ export const updateBook = async (req: Request, res: Response) => {
 export const review = async (req: Request, res: Response) => {
     const bookId = req.params.id;
     const review = req.body.review;
-    const user = req.cookies.auth_user;
+    const user = req.cookies.afribook_currentUser;
 
     try {
         const book = await Book.findById(bookId);
@@ -190,7 +213,7 @@ export const reviewReply = async (req: Request, res: Response) => {
                         "reviews._id": reviewId,
                     },
                 ],
-            },
+            }
         )
             .then((result) => {
                 res.status(200).json({ message: "Reply added", replyObject });
@@ -199,6 +222,24 @@ export const reviewReply = async (req: Request, res: Response) => {
                 console.error(err);
                 res.status(400).json("Could not add reply");
             });
+    } catch (error) {
+        console.error(error);
+    }
+};
+
+export const getBookReviews = async (req: Request, res: Response) => {
+    const bookId = req.params.id;
+
+    try {
+        const book = await Book.findById(bookId);
+        if (!book) {
+            return res.status(400).json({ message: "No book with that id" });
+        }
+        const reviews = book.reviews;
+        if (reviews.length <= 0) {
+            return res.status(200).json("This book has no reviews yet");
+        }
+        res.json(reviews);
     } catch (error) {
         console.error(error);
     }

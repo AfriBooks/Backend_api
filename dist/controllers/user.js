@@ -1,27 +1,4 @@
 "use strict";
-var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
-    if (k2 === undefined) k2 = k;
-    var desc = Object.getOwnPropertyDescriptor(m, k);
-    if (!desc || ("get" in desc ? !m.__esModule : desc.writable || desc.configurable)) {
-      desc = { enumerable: true, get: function() { return m[k]; } };
-    }
-    Object.defineProperty(o, k2, desc);
-}) : (function(o, m, k, k2) {
-    if (k2 === undefined) k2 = k;
-    o[k2] = m[k];
-}));
-var __setModuleDefault = (this && this.__setModuleDefault) || (Object.create ? (function(o, v) {
-    Object.defineProperty(o, "default", { enumerable: true, value: v });
-}) : function(o, v) {
-    o["default"] = v;
-});
-var __importStar = (this && this.__importStar) || function (mod) {
-    if (mod && mod.__esModule) return mod;
-    var result = {};
-    if (mod != null) for (var k in mod) if (k !== "default" && Object.prototype.hasOwnProperty.call(mod, k)) __createBinding(result, mod, k);
-    __setModuleDefault(result, mod);
-    return result;
-};
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
     function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
     return new (P || (P = Promise))(function (resolve, reject) {
@@ -62,32 +39,49 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 exports.__esModule = true;
-var bcrypt_1 = __importDefault(require("bcrypt"));
-var mongoose_1 = __importStar(require("mongoose"));
-var userSchema = new mongoose_1.Schema({
-    name: { type: String, required: true },
-    email: { type: String, required: true },
-    password: { type: String, required: true }
-}, { timestamps: true });
-// Password Encrypting using Bcrypt
-var saltRounds = parseInt(process.env.saltRounds);
-userSchema.pre("save", function (next) {
-    return __awaiter(this, void 0, void 0, function () {
-        var _a;
-        return __generator(this, function (_b) {
-            switch (_b.label) {
-                case 0:
-                    if (!this.isModified("password")) {
-                        next();
-                    }
-                    _a = this;
-                    return [4 /*yield*/, bcrypt_1["default"].hash(this.password, saltRounds)];
-                case 1:
-                    _a.password = _b.sent();
-                    return [2 /*return*/];
-            }
-        });
+exports.createUser = void 0;
+var user_1 = __importDefault(require("../models/user"));
+var createUser = function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
+    var addUser, searchDb, newUser, error_1;
+    return __generator(this, function (_a) {
+        switch (_a.label) {
+            case 0:
+                addUser = {
+                    name: req.body.name,
+                    email: req.body.email,
+                    password: req.body.password
+                };
+                _a.label = 1;
+            case 1:
+                _a.trys.push([1, 4, , 5]);
+                // const passD=  /^(?=.*[0-9])(?=.*[!@#$%^&*])[a-zA-Z0-9!@#$%^&*]{8,15}$/;
+                if (addUser.password.length < 8) {
+                    return [2 /*return*/, res.json({
+                            status: "error",
+                            error: "Password should be at least 8 characters"
+                        })];
+                }
+                return [4 /*yield*/, user_1["default"].findOne({ userName: addUser.email })];
+            case 2:
+                searchDb = _a.sent();
+                if (searchDb) {
+                    return [2 /*return*/, res.status(400).json({
+                            message: "This Email is already in use, please confirm the email or request retrieve password"
+                        })];
+                }
+                return [4 /*yield*/, user_1["default"].create(addUser)];
+            case 3:
+                newUser = _a.sent();
+                res.json(newUser);
+                res.status(201);
+                return [3 /*break*/, 5];
+            case 4:
+                error_1 = _a.sent();
+                res.status(400);
+                res.json(error_1);
+                return [3 /*break*/, 5];
+            case 5: return [2 /*return*/];
+        }
     });
-});
-var User = mongoose_1["default"].model("User", userSchema);
-exports["default"] = User;
+}); };
+exports.createUser = createUser;

@@ -1,16 +1,20 @@
-import express, { Request, Response } from "express";
+import express, { Request, Response, NextFunction } from "express";
 import jwt from "jsonwebtoken";
+import dotenv from "dotenv";
 
-//@ts-ignore
-export const verifyAuthToken = (req: Request, res: Response, next) => {
+dotenv.config();
+
+export const verifyAuthToken = (
+    req: Request,
+    res: Response,
+    next: NextFunction
+) => {
     try {
-      const authorizationHeader = req.headers.authorization;
-      const token = authorizationHeader?.split(" ")[1];
-      //@ts-ignore
-      const decoded = jwt.verify(token, process.env.TOKEN_SECRET);
-      next();
+        const token = req.cookies.auth_token;
+        jwt.verify(token, `${process.env.TOKEN_SECRET}`);
     } catch (error) {
-      res.status(401);
-      res.json({ message: "User authentication failed, invalid token"})
+        res.status(401);
+        return res.json({ message: "User authentication failed, invalid token" });
     }
-  };
+    next();
+};
