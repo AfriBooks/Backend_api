@@ -2,7 +2,7 @@ import { Request, Response } from "express";
 import Book from "../models/book";
 
 export const addBook = async (req: Request, res: Response) => {
-    const user = req.cookies.afribook_currentUser;
+    const user = req.cookies.afribook_currentUser;  
     const filesArray = req.files;
     let file = filesArray
         ? filesArray.length > 0

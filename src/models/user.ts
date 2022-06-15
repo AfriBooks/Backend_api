@@ -2,7 +2,7 @@ import bcrypt, { hash } from "bcrypt";
 import mongoose, { model, Schema } from "mongoose";
 import joi from "joi";
 
-export interface UserData {
+export type UserData = {
   name: string;
   email: string;
   password: string;
