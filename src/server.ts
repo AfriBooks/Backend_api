@@ -20,7 +20,7 @@ bookRoutes(app);
 userRoute(app);
 passRoute(app);
 
-app.get("/", (req: Request, res: Response) => {
+app.get("/api/v1", (req: Request, res: Response) => {
     res.status(200).send("Welcome to AfriBook API");
 });
 
