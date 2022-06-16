@@ -4,7 +4,8 @@
     "description": "",
     "main": "dist/server.js",
     "scripts": {
-        "start": "node dist/server.js",
+        "postinstall": "npm run build",
+        "start": "node build/server.js",
         "watch": "tsc-watch --esModuleInterop src/server.ts --outDir ./dist --onSuccess \"node ./dist/server.js\"",
         "jasmine": "jasmine",
         "build": "npx tsc",
