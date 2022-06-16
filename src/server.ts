@@ -9,7 +9,7 @@ import { passRoute } from "./routes/password";
 main().catch((err) => console.error(err));
 
 const app: Application = express();
-const port: number = 3000;
+const port: number | string = process.env.PORT || 3000;
 
 app.use(cors());
 app.use(express.json());
