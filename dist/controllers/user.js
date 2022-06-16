@@ -39,10 +39,13 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 exports.__esModule = true;
-exports.createUser = void 0;
+exports.deleteUser = exports.getSingleUser = exports.getUser = exports.authenticate = exports.createUser = void 0;
+var jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
+var dotenv_1 = __importDefault(require("dotenv"));
 var user_1 = __importDefault(require("../models/user"));
+dotenv_1["default"].config();
 var createUser = function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
-    var addUser, searchDb, newUser, error_1;
+    var addUser, emailCheck, newUser, error_1;
     return __generator(this, function (_a) {
         switch (_a.label) {
             case 0:
@@ -54,17 +57,19 @@ var createUser = function (req, res) { return __awaiter(void 0, void 0, void 0, 
                 _a.label = 1;
             case 1:
                 _a.trys.push([1, 4, , 5]);
-                // const passD=  /^(?=.*[0-9])(?=.*[!@#$%^&*])[a-zA-Z0-9!@#$%^&*]{8,15}$/;
+                //const passD=  /^(?=.*[0-9])(?=.*[!@#$%^&*])[a-zA-Z0-9!@#$%^&*]{8,15}$/;
                 if (addUser.password.length < 8) {
                     return [2 /*return*/, res.json({
                             status: "error",
                             error: "Password should be at least 8 characters"
                         })];
                 }
-                return [4 /*yield*/, user_1["default"].findOne({ userName: addUser.email })];
+                return [4 /*yield*/, user_1["default"].findOne({
+                        $or: [{ email: addUser.email }]
+                    })];
             case 2:
-                searchDb = _a.sent();
-                if (searchDb) {
+                emailCheck = _a.sent();
+                if (emailCheck) {
                     return [2 /*return*/, res.status(400).json({
                             message: "This Email is already in use, please confirm the email or request retrieve password"
                         })];
@@ -85,3 +90,100 @@ var createUser = function (req, res) { return __awaiter(void 0, void 0, void 0, 
     });
 }); };
 exports.createUser = createUser;
+var authenticate = function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
+    var user, existingUser, token, error_2;
+    return __generator(this, function (_a) {
+        switch (_a.label) {
+            case 0:
+                _a.trys.push([0, 2, , 3]);
+                user = {
+                    email: req.body.email,
+                    password: req.body.password
+                };
+                return [4 /*yield*/, user_1["default"].findOne({ email: user.email })];
+            case 1:
+                existingUser = _a.sent();
+                if (existingUser) {
+                    res.cookie("afribook_currentUser", existingUser);
+                    token = jsonwebtoken_1["default"].sign({ payload: existingUser }, "".concat(process.env.TOKEN_SECRET), { expiresIn: "2h" });
+                    res.cookie('auth_token', token);
+                    res.json(token);
+                }
+                return [3 /*break*/, 3];
+            case 2:
+                error_2 = _a.sent();
+                console.error(error_2);
+                res.status(400);
+                res.json(error_2);
+                return [3 /*break*/, 3];
+            case 3: return [2 /*return*/];
+        }
+    });
+}); };
+exports.authenticate = authenticate;
+var getUser = function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
+    var users, allUsers, error_3;
+    return __generator(this, function (_a) {
+        switch (_a.label) {
+            case 0:
+                _a.trys.push([0, 2, , 3]);
+                return [4 /*yield*/, user_1["default"].find({})];
+            case 1:
+                users = _a.sent();
+                if (!users.length) {
+                    return [2 /*return*/, res.json({
+                            status: 202,
+                            error: "No user in the database"
+                        })];
+                }
+                allUsers = users.length;
+                res.json({ total: allUsers, users: users });
+                res.status(200);
+                return [3 /*break*/, 3];
+            case 2:
+                error_3 = _a.sent();
+                res.status(400);
+                res.json(error_3);
+                return [3 /*break*/, 3];
+            case 3: return [2 /*return*/];
+        }
+    });
+}); };
+exports.getUser = getUser;
+var getSingleUser = function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
+    var id, user, error_4;
+    return __generator(this, function (_a) {
+        switch (_a.label) {
+            case 0:
+                id = req.params.id;
+                _a.label = 1;
+            case 1:
+                _a.trys.push([1, 3, , 4]);
+                return [4 /*yield*/, user_1["default"].findById(id)];
+            case 2:
+                user = _a.sent();
+                if (!user) {
+                    return [2 /*return*/, res.json({
+                            status: 202,
+                            error: "No user with that id"
+                        })];
+                }
+                res.json(user);
+                res.status(200);
+                return [3 /*break*/, 4];
+            case 3:
+                error_4 = _a.sent();
+                res.status(400);
+                res.json(error_4);
+                return [3 /*break*/, 4];
+            case 4: return [2 /*return*/];
+        }
+    });
+}); };
+exports.getSingleUser = getSingleUser;
+var deleteUser = function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
+    return __generator(this, function (_a) {
+        return [2 /*return*/];
+    });
+}); };
+exports.deleteUser = deleteUser;
