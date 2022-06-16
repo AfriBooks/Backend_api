@@ -35,14 +35,28 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
         if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
     }
 };
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 exports.__esModule = true;
 var mongoose = require("mongoose");
 mongoose.set("debug", true); // this logs mongo query to terminal
+var dotenv_1 = __importDefault(require("dotenv"));
+var conn_string_1 = require("./conn_string");
+dotenv_1["default"].config();
+var connectionParams = {
+    useNewUrlParser: true,
+    useUnifiedTopology: true
+};
 var main = function () { return __awaiter(void 0, void 0, void 0, function () {
     return __generator(this, function (_a) {
         switch (_a.label) {
-            case 0: return [4 /*yield*/, mongoose.connect("mongodb://localhost:27017/afribook").then(function () {
+            case 0: return [4 /*yield*/, mongoose
+                    .connect(conn_string_1.MONGO_ATLAS_URI, connectionParams)
+                    .then(function () {
                     console.log("Connected to Afribook DB!");
+                })["catch"](function (err) {
+                    console.error("Error connecting to the database. n".concat(err));
                 })];
             case 1:
                 _a.sent();

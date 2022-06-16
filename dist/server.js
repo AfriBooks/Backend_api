@@ -9,6 +9,7 @@ var cookie_parser_1 = __importDefault(require("cookie-parser"));
 var database_1 = __importDefault(require("./database"));
 var book_1 = __importDefault(require("./routes/book"));
 var user_1 = require("./routes/user");
+var password_1 = require("./routes/password");
 (0, database_1["default"])()["catch"](function (err) { return console.error(err); });
 var app = (0, express_1["default"])();
 var port = 3000;
@@ -18,6 +19,7 @@ app.use(express_1["default"].urlencoded({ extended: false }));
 app.use((0, cookie_parser_1["default"])());
 (0, book_1["default"])(app);
 (0, user_1.userRoute)(app);
+(0, password_1.passRoute)(app);
 app.get("/", function (req, res) {
     res.status(200).send("Welcome to AfriBook API");
 });

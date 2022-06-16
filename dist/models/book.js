@@ -16,7 +16,7 @@ var bookSchema = new mongoose_1.Schema({
     cover: { type: String, trim: true },
     price: { type: Number, required: true, trim: true },
     description: { type: String, required: true, trim: true },
-    categories: [{ type: String, trim: true, lowercase: true }],
+    genre: { type: String, trim: true, lowercase: true },
     created_by: { type: String, required: true, trim: true },
     reviews: [reviewSchema]
 }, { timestamps: true });
