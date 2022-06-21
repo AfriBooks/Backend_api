@@ -15,8 +15,11 @@ export const resetMail = async (email: string, subject: string, text: string) =>
         await transporter.sendMail({
             from: process.env.USER,
             to: email,
-            subject: subject,
-            text: text
+            subject: 'Reset Your Password',
+            text: `Hi, 
+                   Please follow the link bellow to reset your Password,
+                   If you did not initiate this, kindly ignore.
+                   Thanks`
         })
         console.log('email sent successfully');
         
