@@ -55,7 +55,7 @@ export const authenticate = async (req: Request, res: Response) => {
                 `${process.env.TOKEN_SECRET}`,
                 { expiresIn: "2h" }
             );
-            res.cookie('auth_token', token);
+            res.cookie("auth_token", token);
             res.json(token);
         }
     } catch (error) {
@@ -65,43 +65,40 @@ export const authenticate = async (req: Request, res: Response) => {
     }
 };
 
-
-export const getUser = async (req: Request, res: Response) =>{
+export const getUser = async (req: Request, res: Response) => {
     try {
         const users = await User.find({});
-        if (!users.length){
+        if (!users.length) {
             return res.json({
                 status: 202,
                 error: "No user in the database",
             });
         }
         const allUsers = users.length;
-        res.json({ total: allUsers, users});
+        res.json({ total: allUsers, users });
         res.status(200);
     } catch (error) {
         res.status(400);
         res.json(error);
     }
-}
+};
 
-export const getSingleUser = async (req: Request, res: Response) =>{
- const id = req.params.id;
- try {
-    const user = await User.findById(id);
-    if (!user) {
-        return res.json({
-            status: 202,
-            error: "No user with that id",
-        });
+export const getSingleUser = async (req: Request, res: Response) => {
+    const id = req.params.id;
+    try {
+        const user = await User.findById(id);
+        if (!user) {
+            return res.json({
+                status: 202,
+                error: "No user with that id",
+            });
+        }
+        res.json(user);
+        res.status(200);
+    } catch (error) {
+        res.status(400);
+        res.json(error);
     }
-    res.json(user);
-    res.status(200); 
- } catch (error) {
-    res.status(400);
-    res.json(error);
- }
-}
+};
 
-export const deleteUser = async (req: Request, res: Response) => {
-}
-
+export const deleteUser = async (req: Request, res: Response) => {};

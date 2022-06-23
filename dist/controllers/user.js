@@ -106,7 +106,7 @@ var authenticate = function (req, res) { return __awaiter(void 0, void 0, void 0
                 if (existingUser) {
                     res.cookie("afribook_currentUser", existingUser);
                     token = jsonwebtoken_1["default"].sign({ payload: existingUser }, "".concat(process.env.TOKEN_SECRET), { expiresIn: "2h" });
-                    res.cookie('auth_token', token);
+                    res.cookie("auth_token", token);
                     res.json(token);
                 }
                 return [3 /*break*/, 3];
@@ -181,9 +181,7 @@ var getSingleUser = function (req, res) { return __awaiter(void 0, void 0, void 
     });
 }); };
 exports.getSingleUser = getSingleUser;
-var deleteUser = function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
-    return __generator(this, function (_a) {
-        return [2 /*return*/];
-    });
-}); };
+var deleteUser = function (req, res) { return __awaiter(void 0, void 0, void 0, function () { return __generator(this, function (_a) {
+    return [2 /*return*/];
+}); }); };
 exports.deleteUser = deleteUser;

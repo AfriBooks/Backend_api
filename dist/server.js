@@ -12,7 +12,7 @@ var user_1 = require("./routes/user");
 var password_1 = require("./routes/password");
 (0, database_1["default"])()["catch"](function (err) { return console.error(err); });
 var app = (0, express_1["default"])();
-var port = 3000;
+var port = process.env.PORT || 3000;
 app.use((0, cors_1["default"])());
 app.use(express_1["default"].json());
 app.use(express_1["default"].urlencoded({ extended: false }));
