@@ -158,23 +158,27 @@ var getSingleBook = function (req, res) { return __awaiter(void 0, void 0, void 
 }); };
 exports.getSingleBook = getSingleBook;
 var getBooksByCategories = function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
-    var category, books, error_3;
+    var category, error_3;
     return __generator(this, function (_a) {
         switch (_a.label) {
             case 0:
-                category = req.params.category;
+                category = req.params.category.toLowerCase();
                 _a.label = 1;
             case 1:
                 _a.trys.push([1, 3, , 4]);
-                return [4 /*yield*/, book_1["default"].find({ genre: category })];
+                return [4 /*yield*/, book_1["default"].find({}).then(function (result) {
+                        var categories = [];
+                        for (var book in result) {
+                            if (result[book].genre.toLowerCase() === category) {
+                                categories.push(result[book]);
+                            }
+                        }
+                        res.status(200).json(categories);
+                    })["catch"](function (error) {
+                        console.error(error);
+                    })];
             case 2:
-                books = _a.sent();
-                if (!books.length) {
-                    return [2 /*return*/, res
-                            .status(202)
-                            .json({ message: "No books in that category" })];
-                }
-                res.status(200).json(books);
+                _a.sent();
                 return [3 /*break*/, 4];
             case 3:
                 error_3 = _a.sent();
