@@ -40,9 +40,12 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 exports.__esModule = true;
 exports.getBookReviews = exports.reviewReply = exports.review = exports.updateBook = exports.deleteBook = exports.getBooksByUser = exports.getBooksByCategories = exports.getSingleBook = exports.getBooks = exports.addBook = void 0;
+var conn_string_1 = require("../conn_string");
+var cloudinary = require("cloudinary").v2;
 var book_1 = __importDefault(require("../models/book"));
+cloudinary.config(conn_string_1.CLOUDINARY_CONFIG);
 var addBook = function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
-    var user, filesArray, file, new_book, findDuplicate, err_1;
+    var user, filesArray, file, fileName, new_book, findDuplicate, err_1;
     return __generator(this, function (_a) {
         switch (_a.label) {
             case 0:
@@ -54,20 +57,31 @@ var addBook = function (req, res) { return __awaiter(void 0, void 0, void 0, fun
                             filesArray[0].path
                         : ""
                     : "";
+                fileName = "";
+                return [4 /*yield*/, cloudinary.uploader
+                        .upload(file)
+                        .then(function (result) {
+                        console.log(result);
+                        fileName += result.secure_url;
+                    })["catch"](function (error) {
+                        return console.log("failure", error);
+                    })];
+            case 1:
+                _a.sent();
                 new_book = {
                     title: req.body.title,
                     author: req.body.author,
-                    cover: file,
+                    cover: fileName,
                     price: req.body.price,
                     description: req.body.description,
                     genre: req.body.genre,
                     created_by: user._id
                 };
-                _a.label = 1;
-            case 1:
-                _a.trys.push([1, 4, , 5]);
-                return [4 /*yield*/, book_1["default"].findOne({ title: new_book.title })];
+                _a.label = 2;
             case 2:
+                _a.trys.push([2, 5, , 6]);
+                return [4 /*yield*/, book_1["default"].findOne({ title: new_book.title })];
+            case 3:
                 findDuplicate = _a.sent();
                 if (findDuplicate) {
                     return [2 /*return*/, res
@@ -78,14 +92,14 @@ var addBook = function (req, res) { return __awaiter(void 0, void 0, void 0, fun
                         .then(function (response) {
                         res.status(201).json(response);
                     })["catch"](function (err) { return console.error(err); })];
-            case 3:
-                _a.sent();
-                return [3 /*break*/, 5];
             case 4:
+                _a.sent();
+                return [3 /*break*/, 6];
+            case 5:
                 err_1 = _a.sent();
                 console.error(err_1);
-                return [3 /*break*/, 5];
-            case 5: return [2 /*return*/];
+                return [3 /*break*/, 6];
+            case 6: return [2 /*return*/];
         }
     });
 }); };
@@ -152,7 +166,7 @@ var getBooksByCategories = function (req, res) { return __awaiter(void 0, void 0
                 _a.label = 1;
             case 1:
                 _a.trys.push([1, 3, , 4]);
-                return [4 /*yield*/, book_1["default"].find({ categories: category })];
+                return [4 /*yield*/, book_1["default"].find({ genre: category })];
             case 2:
                 books = _a.sent();
                 if (!books.length) {
@@ -217,11 +231,11 @@ var deleteBook = function (req, res) { return __awaiter(void 0, void 0, void 0, 
                 if (!book) {
                     return [2 /*return*/, res.status(400).json({ message: "No book with that id" })];
                 }
-                if (user.isAdmin !== true || user.id !== book.created_by) {
-                    return [2 /*return*/, res
-                            .status(400)
-                            .json("You can only delete books posted by you")];
-                }
+                // if (user.isAdmin !== true || user.id != book.created_by) {
+                //     return res
+                //         .status(400)
+                //         .json("You can only delete books posted by you");
+                // }
                 return [4 /*yield*/, book_1["default"].findByIdAndDelete(id)
                         .then(function (result) {
                         res.status(200).json({ message: "Book deleted successfully" });
@@ -230,6 +244,11 @@ var deleteBook = function (req, res) { return __awaiter(void 0, void 0, void 0, 
                         res.status(400).json({ message: "Could not delete book" });
                     })];
             case 3:
+                // if (user.isAdmin !== true || user.id != book.created_by) {
+                //     return res
+                //         .status(400)
+                //         .json("You can only delete books posted by you");
+                // }
                 _a.sent();
                 return [3 /*break*/, 5];
             case 4:

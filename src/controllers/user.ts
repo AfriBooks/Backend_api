@@ -56,7 +56,7 @@ export const authenticate = async (req: Request, res: Response) => {
                 { expiresIn: "2h" }
             );
             res.cookie("auth_token", token);
-            res.json(token);
+            res.status(200).json({ token, username: existingUser.name });
         }
     } catch (error) {
         console.error(error);

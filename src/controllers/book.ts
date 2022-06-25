@@ -1,8 +1,12 @@
 import { Request, Response } from "express";
+import { CLOUDINARY_CONFIG } from "../conn_string";
+const cloudinary = require("cloudinary").v2;
 import Book from "../models/book";
 
+cloudinary.config(CLOUDINARY_CONFIG);
+
 export const addBook = async (req: Request, res: Response) => {
-    const user = req.cookies.afribook_currentUser;  
+    const user = req.cookies.afribook_currentUser;
     const filesArray = req.files;
     let file = filesArray
         ? filesArray.length > 0
@@ -10,11 +14,23 @@ export const addBook = async (req: Request, res: Response) => {
               filesArray[0].path
             : ""
         : "";
+    
+    let fileName = "";
+
+    await cloudinary.uploader
+        .upload(file)
+        .then((result: any) => {
+            console.log(result);
+            fileName += result.secure_url;
+        })
+        .catch((error: any) => {
+            return console.log("failure", error);
+        });
 
     const new_book = {
         title: req.body.title,
         author: req.body.author,
-        cover: file,
+        cover: fileName,
         price: req.body.price,
         description: req.body.description,
         genre: req.body.genre,
@@ -70,7 +86,7 @@ export const getSingleBook = async (req: Request, res: Response) => {
 export const getBooksByCategories = async (req: Request, res: Response) => {
     const category = req.params.category;
     try {
-        const books = await Book.find({ categories: category });
+        const books = await Book.find({ genre: category });
         if (!books.length) {
             return res
                 .status(202)
@@ -111,11 +127,11 @@ export const deleteBook = async (req: Request, res: Response) => {
         if (!book) {
             return res.status(400).json({ message: "No book with that id" });
         }
-        if (user.isAdmin !== true || user.id !== book.created_by) {
-            return res
-                .status(400)
-                .json("You can only delete books posted by you");
-        }
+        // if (user.isAdmin !== true || user.id != book.created_by) {
+        //     return res
+        //         .status(400)
+        //         .json("You can only delete books posted by you");
+        // }
         await Book.findByIdAndDelete(id)
             .then((result) => {
                 res.status(200).json({ message: "Book deleted successfully" });

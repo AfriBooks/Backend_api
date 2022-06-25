@@ -39,40 +39,68 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 exports.__esModule = true;
-exports.resetMail = void 0;
-var nodemailer_1 = __importDefault(require("nodemailer"));
-var resetMail = function (email, subject, text) { return __awaiter(void 0, void 0, void 0, function () {
-    var transporter, error_1;
+exports.createOrder = exports.getOrders = void 0;
+var order_1 = __importDefault(require("../models/order"));
+var tracker = require("delivery-tracker");
+var courier = tracker.courier(tracker.COURIER.FEDEX.fedex);
+var getOrders = function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
+    var orders, error_1;
     return __generator(this, function (_a) {
         switch (_a.label) {
             case 0:
-                _a.trys.push([0, 2, , 3]);
-                transporter = nodemailer_1["default"].createTransport({
-                    host: process.env.HOST,
-                    service: process.env.SERVICE,
-                    port: 587,
-                    secure: true,
-                    auth: {
-                        user: process.env.USER,
-                        pass: process.env.PASS
-                    }
+                courier.trace({ trace_number: "123456789012" }, function (err, result) {
+                    console.log(result);
                 });
-                return [4 /*yield*/, transporter.sendMail({
-                        from: process.env.USER,
-                        to: email,
-                        subject: 'Reset Your Password',
-                        text: "Hi, \n                   Please follow the link bellow to reset your Password,\n                   If you did not initiate this, kindly ignore.\n                   Thanks"
-                    })];
+                return [2 /*return*/];
             case 1:
-                _a.sent();
-                console.log('email sent successfully');
-                return [3 /*break*/, 3];
+                _a.trys.push([1, 3, , 4]);
+                return [4 /*yield*/, order_1["default"].find({})];
             case 2:
+                orders = _a.sent();
+                if (!orders.length) {
+                    return [2 /*return*/, res
+                            .status(202)
+                            .json({ message: "No orders in the database" })];
+                }
+                return [2 /*return*/, res.status(200).json(orders)];
+            case 3:
                 error_1 = _a.sent();
-                console.log(error_1, 'email failed');
-                return [3 /*break*/, 3];
-            case 3: return [2 /*return*/];
+                console.error(error_1);
+                return [3 /*break*/, 4];
+            case 4: return [2 /*return*/];
         }
     });
 }); };
-exports.resetMail = resetMail;
+exports.getOrders = getOrders;
+var createOrder = function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
+    var new_order, err_1;
+    return __generator(this, function (_a) {
+        switch (_a.label) {
+            case 0:
+                new_order = {
+                    book_id: req.body.book_id,
+                    quantity: req.body.quantity,
+                    price: req.body.price,
+                    user_id: req.body.user_id,
+                    delivery_address: req.body.delivery_address,
+                    status: "InfoReceived"
+                };
+                _a.label = 1;
+            case 1:
+                _a.trys.push([1, 3, , 4]);
+                return [4 /*yield*/, order_1["default"].create(new_order)
+                        .then(function (response) {
+                        res.status(201).json(response);
+                    })["catch"](function (err) { return console.error(err); })];
+            case 2:
+                _a.sent();
+                return [3 /*break*/, 4];
+            case 3:
+                err_1 = _a.sent();
+                console.error(err_1);
+                return [3 /*break*/, 4];
+            case 4: return [2 /*return*/];
+        }
+    });
+}); };
+exports.createOrder = createOrder;

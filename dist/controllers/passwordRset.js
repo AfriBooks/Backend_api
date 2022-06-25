@@ -78,7 +78,7 @@ var forgotPass = function (req, res) { return __awaiter(void 0, void 0, void 0, 
                 token = _a.sent();
                 _a.label = 4;
             case 4:
-                link = "".concat(process.env.BASE_URL, "/password-reset/").concat(user.id, "/").concat(token.token);
+                link = "".concat(process.env.BASE_URL, "/resetPass/").concat(user.id, "/").concat(token.token);
                 return [4 /*yield*/, (0, sendEmail_1.resetMail)(user.email, "password reset", link)];
             case 5:
                 _a.sent();

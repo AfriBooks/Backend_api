@@ -107,7 +107,7 @@ var authenticate = function (req, res) { return __awaiter(void 0, void 0, void 0
                     res.cookie("afribook_currentUser", existingUser);
                     token = jsonwebtoken_1["default"].sign({ payload: existingUser }, "".concat(process.env.TOKEN_SECRET), { expiresIn: "2h" });
                     res.cookie("auth_token", token);
-                    res.json(token);
+                    res.status(200).json({ token: token, username: existingUser.name });
                 }
                 return [3 /*break*/, 3];
             case 2:
