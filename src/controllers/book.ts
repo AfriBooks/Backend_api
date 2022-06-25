@@ -14,7 +14,7 @@ export const addBook = async (req: Request, res: Response) => {
               filesArray[0].path
             : ""
         : "";
-    
+
     let fileName = "";
 
     await cloudinary.uploader
@@ -84,16 +84,19 @@ export const getSingleBook = async (req: Request, res: Response) => {
 };
 
 export const getBooksByCategories = async (req: Request, res: Response) => {
-    const category = req.params.category;
+    const category = req.params.category.toLowerCase();
     try {
-        const books = await Book.find({ genre: category });
-        if (!books.length) {
-            return res
-                .status(202)
-                .json({ message: "No books in that category" });
-        }
-
-        res.status(200).json(books);
+        await Book.find({}).then((result) => {
+            let categories = [];
+            for (let book in result) {
+                if (result[book].genre.toLowerCase() === category) {
+                    categories.push(result[book]);
+                }
+            }
+            res.status(200).json(categories);
+        }).catch(error => {
+            console.error(error);
+        });
     } catch (error) {
         console.error(error);
     }

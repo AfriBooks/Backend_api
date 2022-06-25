@@ -41,21 +41,16 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 exports.__esModule = true;
 exports.createOrder = exports.getOrders = void 0;
 var order_1 = __importDefault(require("../models/order"));
-var tracker = require("delivery-tracker");
-var courier = tracker.courier(tracker.COURIER.FEDEX.fedex);
+// const tracker = require("delivery-tracker");
+// const courier = tracker.courier(tracker.COURIER.FEDEX.fedex);
 var getOrders = function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
     var orders, error_1;
     return __generator(this, function (_a) {
         switch (_a.label) {
             case 0:
-                courier.trace({ trace_number: "123456789012" }, function (err, result) {
-                    console.log(result);
-                });
-                return [2 /*return*/];
-            case 1:
-                _a.trys.push([1, 3, , 4]);
+                _a.trys.push([0, 2, , 3]);
                 return [4 /*yield*/, order_1["default"].find({})];
-            case 2:
+            case 1:
                 orders = _a.sent();
                 if (!orders.length) {
                     return [2 /*return*/, res
@@ -63,11 +58,11 @@ var getOrders = function (req, res) { return __awaiter(void 0, void 0, void 0, f
                             .json({ message: "No orders in the database" })];
                 }
                 return [2 /*return*/, res.status(200).json(orders)];
-            case 3:
+            case 2:
                 error_1 = _a.sent();
                 console.error(error_1);
-                return [3 /*break*/, 4];
-            case 4: return [2 /*return*/];
+                return [3 /*break*/, 3];
+            case 3: return [2 /*return*/];
         }
     });
 }); };
