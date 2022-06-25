@@ -60,8 +60,8 @@ var resetMail = function (email, subject, text) { return __awaiter(void 0, void 
                 return [4 /*yield*/, transporter.sendMail({
                         from: process.env.USER,
                         to: email,
-                        subject: subject,
-                        text: text
+                        subject: 'Reset Your Password',
+                        text: "Hi, \n                   Please follow the link bellow to reset your Password,\n                   If you did not initiate this, kindly ignore.\n                   Thanks"
                     })];
             case 1:
                 _a.sent();
