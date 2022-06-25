@@ -86,7 +86,7 @@ export const getSingleBook = async (req: Request, res: Response) => {
 export const getBooksByCategories = async (req: Request, res: Response) => {
     const category = req.params.category;
     try {
-        const books = await Book.find({ categories: category });
+        const books = await Book.find({ genre: category });
         if (!books.length) {
             return res
                 .status(202)

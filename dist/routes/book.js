@@ -2,6 +2,7 @@
 exports.__esModule = true;
 var verifyAuth_1 = require("../auth/verifyAuth");
 var book_1 = require("../controllers/book");
+var order_1 = require("../controllers/order");
 var upload_1 = require("../middleware/upload");
 var bookRoutes = function (app) {
     app.get("/books", book_1.getBooks);
@@ -13,5 +14,8 @@ var bookRoutes = function (app) {
     app.patch("/books/:id/reviews", verifyAuth_1.verifyAuthToken, book_1.review);
     app.patch("/books/:id/reviews/:reviewId/reply", verifyAuth_1.verifyAuthToken, book_1.reviewReply);
     app.get("/books/:id/reviews", book_1.getBookReviews);
+    app.get('/users/:id/books', book_1.getBooksByUser);
+    app.get('/orders', order_1.getOrders);
+    app.post('/orders', order_1.createOrder);
 };
 exports["default"] = bookRoutes;

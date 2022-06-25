@@ -166,7 +166,7 @@ var getBooksByCategories = function (req, res) { return __awaiter(void 0, void 0
                 _a.label = 1;
             case 1:
                 _a.trys.push([1, 3, , 4]);
-                return [4 /*yield*/, book_1["default"].find({ categories: category })];
+                return [4 /*yield*/, book_1["default"].find({ genre: category })];
             case 2:
                 books = _a.sent();
                 if (!books.length) {

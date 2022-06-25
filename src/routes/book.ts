@@ -6,11 +6,13 @@ import {
     getBookReviews,
     getBooks,
     getBooksByCategories,
+    getBooksByUser,
     getSingleBook,
     review,
     reviewReply,
     updateBook,
 } from "../controllers/book";
+import { createOrder, getOrders } from "../controllers/order";
 import { uploadImg } from "../middleware/upload";
 
 const bookRoutes = (app: Application) => {
@@ -23,6 +25,9 @@ const bookRoutes = (app: Application) => {
     app.patch("/books/:id/reviews",verifyAuthToken, review);
     app.patch("/books/:id/reviews/:reviewId/reply", verifyAuthToken, reviewReply);
     app.get("/books/:id/reviews", getBookReviews);
+    app.get('/users/:id/books', getBooksByUser);
+    app.get('/orders', getOrders);
+    app.post('/orders', createOrder);
 };
 
 export default bookRoutes;
