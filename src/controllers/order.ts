@@ -1,14 +1,14 @@
 import { Request, Response } from "express";
 import Order from "../models/order";
 
-const tracker = require("delivery-tracker");
-const courier = tracker.courier(tracker.COURIER.FEDEX.fedex);
+// const tracker = require("delivery-tracker");
+// const courier = tracker.courier(tracker.COURIER.FEDEX.fedex);
 
 export const getOrders = async (req: Request, res: Response) => {
-    courier.trace({ trace_number: "123456789012" }, function (err: any, result: any) {
-        console.log(result);
-    });
-    return;
+    // courier.trace({ trace_number: "123456789012" }, function (err: any, result: any) {
+    //     console.log(result);
+    // });
+    // return;
     try {
         const orders = await Order.find({});
         if (!orders.length) {
