@@ -1,14 +1,7 @@
 import { Request, Response } from "express";
 import Order from "../models/order";
 
-// const tracker = require("delivery-tracker");
-// const courier = tracker.courier(tracker.COURIER.FEDEX.fedex);
-
 export const getOrders = async (req: Request, res: Response) => {
-    // courier.trace({ trace_number: "123456789012" }, function (err: any, result: any) {
-    //     console.log(result);
-    // });
-    // return;
     try {
         const orders = await Order.find({});
         if (!orders.length) {
@@ -29,7 +22,8 @@ export const createOrder = async (req: Request, res: Response) => {
         price: req.body.price,
         user_id: req.body.user_id,
         delivery_address: req.body.delivery_address,
-        status: "InfoReceived",
+        status: "pending",
+        tracking_id: ""
     };
     try {
         await Order.create(new_order)
