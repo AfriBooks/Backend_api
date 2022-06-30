@@ -1,4 +1,5 @@
 import Order from "../models/order";
+import { deleteBook } from "./book";
 
 //solution
 //service gets pending orders
@@ -10,8 +11,8 @@ const randomInterval = () => {
     return Math.floor(Math.random() * (6000 - 1000 + 1) + 1000);
 };
 
-let statusArray = [];
-let status ="";
+let statusArray: string[] = [];
+let status = "";
 const getStatus = async () => {
     try {
         const orders = await Order.find({});
@@ -23,26 +24,31 @@ const getStatus = async () => {
     }
 };
 
-const updateStatus = () => {
-    switch (status) {
-        case "pending":
-            console.log("infoReceived");
-            break;
-        case "infoReceived":
-            console.log("inTransit");
-            break;
-        case "inTransit":
-            console.log("delivered");
-            break;
-        // case "delivered":
-        //     console.log("returned");
-        //     break;
-        default:
-            console.log("All orders resolved");
-    }
-    return status;
-};
+// loop status array
+// change status to next status at random interval
 
-setTimeout(() => {
-    updateStatus();
-}, randomInterval());
+// const updateStatus = () => {
+//     switch (status) {
+//         case "pending":
+//             console.log("infoReceived");
+//             // make patch call to change the status after given interval (random interval)
+
+//             break;
+//         case "infoReceived":
+//             console.log("inTransit");
+//             break;
+//         case "inTransit":
+//             console.log("delivered");
+//             break;
+//         // case "delivered":
+//         //     console.log("returned");
+//         //     break;
+//         default:
+//             console.log("All orders resolved");
+//     }
+//     return status;
+// };
+
+// setTimeout(() => {
+//     updateStatus();
+// }, randomInterval());
