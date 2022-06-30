@@ -191,7 +191,7 @@ export const review = async (req: Request, res: Response) => {
         }
         let reviewsArray = book.reviews;
         const data = {
-            user,
+            user: user.name,
             review,
         };
         reviewsArray.push(data);
