@@ -86,17 +86,19 @@ export const getSingleBook = async (req: Request, res: Response) => {
 export const getBooksByCategories = async (req: Request, res: Response) => {
     const category = req.params.category.toLowerCase();
     try {
-        await Book.find({}).then((result) => {
-            let categories = [];
-            for (let book in result) {
-                if (result[book].genre.toLowerCase() === category) {
-                    categories.push(result[book]);
+        await Book.find({})
+            .then((result) => {
+                let categories = [];
+                for (let book in result) {
+                    if (result[book].genre.toLowerCase() === category) {
+                        categories.push(result[book]);
+                    }
                 }
-            }
-            res.status(200).json(categories);
-        }).catch(error => {
-            console.error(error);
-        });
+                res.status(200).json(categories);
+            })
+            .catch((error) => {
+                console.error(error);
+            });
     } catch (error) {
         console.error(error);
     }
@@ -191,7 +193,7 @@ export const review = async (req: Request, res: Response) => {
         }
         let reviewsArray = book.reviews;
         const data = {
-            user: user.name,
+            username: user.name,
             review,
         };
         reviewsArray.push(data);
@@ -256,9 +258,11 @@ export const getBookReviews = async (req: Request, res: Response) => {
         }
         const reviews = book.reviews;
         if (reviews.length <= 0) {
-            return res.status(200).json("This book has no reviews yet");
+            return res
+                .status(400)
+                .json({ message: "This book has no reviews yet" });
         }
-        res.json(reviews);
+        res.status(200).json(reviews);
     } catch (error) {
         console.error(error);
     }

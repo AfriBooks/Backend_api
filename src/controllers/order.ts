@@ -1,14 +1,22 @@
 import { Request, Response } from "express";
 import Order from "../models/order";
 
+const randomInterval = () => {
+    return Math.floor(Math.random() * (6000 - 1000 + 1) + 1000);
+};
+
+let statusArray: string[] = [];
+let orders: object[];
+
 export const getOrders = async (req: Request, res: Response) => {
     try {
-        const orders = await Order.find({});
-        if (!orders.length) {
+        const result = await Order.find({});
+        if (!result.length) {
             return res
                 .status(202)
                 .json({ message: "No orders in the database" });
         }
+        orders = result;
         return res.status(200).json(orders);
     } catch (error) {
         console.error(error);
@@ -23,7 +31,6 @@ export const createOrder = async (req: Request, res: Response) => {
         user_id: req.body.user_id,
         delivery_address: req.body.delivery_address,
         status: "pending",
-        tracking_id: ""
     };
     try {
         await Order.create(new_order)
