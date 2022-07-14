@@ -1,6 +1,6 @@
 import mongoose, { model, Schema } from "mongoose";
 
-const donorSchema = new mongoose.Schema({
+const paySchema = new mongoose.Schema({
     full_name: {
         type: String, 
         required: true,
@@ -19,6 +19,4 @@ const donorSchema = new mongoose.Schema({
     }
 });
 
-const Donor = mongoose.model('Donor', donorSchema);
-
-module.exports = {Donor}
+ export const Pay = mongoose.model('pay', paySchema);
