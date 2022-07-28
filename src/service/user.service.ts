@@ -1,5 +1,6 @@
 import axios, { Axios } from "axios";
 import { env } from "process";
+//@ts-ignore
 import config from ".../config";
 import qs from "qs";
 import { FilterQuery, Query, QueryOptions, UpdateQuery } from "mongoose";
@@ -56,7 +57,9 @@ export const getGoogleOauthTokens = async ({ code,}: {
 export const getGoogleUser = async (
   id_token: string,
   access_token: string,
-): Promise<GoogleUserResult>=> {
+)
+//@ts-ignore
+: Promise<GoogleUserResult>=> {
   try {
     const res = await axios.get<GoogleUserResult>(
       `https://www.googleapis.com/oauth2/v1/userinfo?alt=json&access_token=${access_token}`,

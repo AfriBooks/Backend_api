@@ -114,7 +114,12 @@ export const googleHandler =async (req: Request, res: Response)=>{
     //get the id and access tokens with the code
     const {id_token, access_token} = await getGoogleOauthTokens({code});
     // get user with token
-    const googleUser = await getGoogleUser({id_token, access_token})
+    //@ts-ignore
+    const googleUser = await getGoogleUser({ id_token, access_token })
+
+    if(!googleUser.verified_email){
+        return res.status(403).send('Google account is not verified')
+    }
     //upsert the user
 
     //redirect to profile
