@@ -2,6 +2,8 @@ import axios, { Axios } from "axios";
 import { env } from "process";
 import config from ".../config";
 import qs from "qs";
+import { FilterQuery, Query, QueryOptions, UpdateQuery } from "mongoose";
+import User, { UserData } from "../models/user";
 
 interface GoogleTokensResult {
   access_token: string;
@@ -69,3 +71,7 @@ export const getGoogleUser = async (
     console.log(error, "Error fetching google user");
   }
 };
+
+export const findAndUpdateUser = async (query: FilterQuery<UserData>, update: UpdateQuery<UserData>, options: QueryOptions = {})=>{
+ return User.findOneAndUpdate(query, update, options)
+}
