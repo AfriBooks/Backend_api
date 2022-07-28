@@ -2,7 +2,7 @@ import jwt from "jsonwebtoken";
 import dotenv from "dotenv";
 import { Request, Response } from "express";
 import User, { UserData } from "../models/user";
-import { getGoogleOauthTokens, getGoogleUser } from "../service/user.service";
+import { findAndUpdateUser, getGoogleOauthTokens, getGoogleUser } from "../service/user.service";
 
 dotenv.config();
 
@@ -121,7 +121,17 @@ export const googleHandler =async (req: Request, res: Response)=>{
         return res.status(403).send('Google account is not verified')
     }
     //upsert the user
-
+     const user = await findAndUpdateUser({
+        email: googleUser.email,
+     },
+     {
+        email: googleUser.email,
+        name: googleUser.name,
+     },
+     {
+        upsert: true,
+        new: true
+     })
     //redirect to profile
 
     //create access and refresh tokens
