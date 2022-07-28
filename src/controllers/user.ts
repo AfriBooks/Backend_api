@@ -2,6 +2,7 @@ import jwt from "jsonwebtoken";
 import dotenv from "dotenv";
 import { Request, Response } from "express";
 import User, { UserData } from "../models/user";
+import { getGoogleOauthTokens } from "../service/user.service";
 
 dotenv.config();
 
@@ -106,12 +107,12 @@ export const deleteUser = async (req: Request, res: Response) => {};
 
 
 export const googleHandler =async (req: Request, res: Response)=>{
-
+   try {
     // get the codes from qs
     const code = req.query.code as string;
 
     //get the id and access tokens with the code
-
+    const {id_token, access_token} = await getGoogleOauthTokens({code});
     // get user with token
 
     //upsert the user
@@ -123,4 +124,9 @@ export const googleHandler =async (req: Request, res: Response)=>{
     //set cookies
 
     //redirect back to client
+   } catch (error) {
+    console.log(error, 'Failed to authorize google user');
+    
+   }
+    
 }
