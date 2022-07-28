@@ -2,7 +2,7 @@ import jwt from "jsonwebtoken";
 import dotenv from "dotenv";
 import { Request, Response } from "express";
 import User, { UserData } from "../models/user";
-import { getGoogleOauthTokens } from "../service/user.service";
+import { getGoogleOauthTokens, getGoogleUser } from "../service/user.service";
 
 dotenv.config();
 
@@ -114,7 +114,7 @@ export const googleHandler =async (req: Request, res: Response)=>{
     //get the id and access tokens with the code
     const {id_token, access_token} = await getGoogleOauthTokens({code});
     // get user with token
-
+    const googleUser = await getGoogleUser({id_token, access_token})
     //upsert the user
 
     //redirect to profile
