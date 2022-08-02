@@ -2,7 +2,7 @@ import jwt from "jsonwebtoken";
 import dotenv from "dotenv";
 import { Request, Response } from "express";
 import User, { UserData } from "../models/user";
-import { findAndUpdateUser, getGoogleOauthTokens, getGoogleUser } from "../service/user.service";
+// import { findAndUpdateUser, getGoogleOauthTokens, getGoogleUser } from "../service/user.service";
 
 dotenv.config();
 
@@ -107,41 +107,20 @@ export const deleteUser = async (req: Request, res: Response) => {};
 
 
 export const googleHandler =async (req: Request, res: Response)=>{
-   try {
+   
     // get the codes from qs
-    const code = req.query.code as string;
-
-    //get the id and access tokens with the code
-    const {id_token, access_token} = await getGoogleOauthTokens({code});
-    // get user with token
-    //@ts-ignore
-    const googleUser = await getGoogleUser({ id_token, access_token })
-
-    if(!googleUser.verified_email){
-        return res.status(403).send('Google account is not verified')
-    }
-    //upsert the user
-     const user = await findAndUpdateUser({
-        email: googleUser.email,
-     },
-     {
-        email: googleUser.email,
-        name: googleUser.name,
-     },
-     {
-        upsert: true,
-        new: true
-     })
-    //redirect to profile
-
-    //create access and refresh tokens
-
-    //set cookies
-
-    //redirect back to client
-   } catch (error) {
-    console.log(error, 'Failed to authorize google user');
+   const code = req.query.code as string;
+    // get the id and access tokens with the code
+   
+    // upsert the user
     
-   }
+    // redirect to profile
+
+    // create access and refresh tokens
+
+    // set cookies
+
+    // redirect back to client
+ 
     
 }
