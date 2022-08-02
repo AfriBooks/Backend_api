@@ -109,7 +109,7 @@ export const deleteUser = async (req: Request, res: Response) => {};
 export const googleHandler =async (req: Request, res: Response)=>{
    
     // get the codes from qs
-   
+   const code = req.query.code as string;
     // get the id and access tokens with the code
    
     // upsert the user
