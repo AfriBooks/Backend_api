@@ -1,7 +1,7 @@
 
 
 const getGoogleUri = ()=>{
-   const rootUrl = ''
+   const rootUrl = 'https://accounts.google.com/o/oauth2/v2/auth'
 
    const options ={
     redirect_url: process.env.PUBLIC_GOOGLE_OAUTH_REDIRECT_URL as string,

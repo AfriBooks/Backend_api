@@ -1,6 +1,7 @@
 import { Application } from "express";
+import passport from "passport";
 import { verifyAuthToken } from "../auth/verifyAuth";
-import { createUser, authenticate, getUser, getSingleUser, googleHandler } from "../controllers/user";
+import { createUser, authenticate, getUser, getSingleUser, } from "../controllers/user";
 
 export const userRoute = (app: Application) => {
   app.post("/user", createUser);
@@ -8,5 +9,5 @@ export const userRoute = (app: Application) => {
   app.get("/users", getUser);
   app.get("/user/:id", getSingleUser);
   app.delete("/user/:id");
-  app.get('/api/books/oauth/google', googleHandler)
+  app.get('/google', passport.authenticate('google') );
 };
