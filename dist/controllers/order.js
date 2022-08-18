@@ -39,7 +39,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 exports.__esModule = true;
-exports.createOrder = exports.getOrders = void 0;
+exports.createOrder = exports.getOrdersByUser = exports.getOrders = void 0;
 var order_1 = __importDefault(require("../models/order"));
 var randomInterval = function () {
     return Math.floor(Math.random() * (6000 - 1000 + 1) + 1000);
@@ -70,6 +70,32 @@ var getOrders = function (req, res) { return __awaiter(void 0, void 0, void 0, f
     });
 }); };
 exports.getOrders = getOrders;
+var getOrdersByUser = function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
+    var id, orders_1, error_2;
+    return __generator(this, function (_a) {
+        switch (_a.label) {
+            case 0:
+                id = req.params.id;
+                _a.label = 1;
+            case 1:
+                _a.trys.push([1, 3, , 4]);
+                return [4 /*yield*/, order_1["default"].find({ user_id: id })];
+            case 2:
+                orders_1 = _a.sent();
+                if (!orders_1) {
+                    return [2 /*return*/, res.status(400).json("No orders created by this user")];
+                }
+                res.status(200).json(orders_1);
+                return [3 /*break*/, 4];
+            case 3:
+                error_2 = _a.sent();
+                console.error(error_2);
+                return [3 /*break*/, 4];
+            case 4: return [2 /*return*/];
+        }
+    });
+}); };
+exports.getOrdersByUser = getOrdersByUser;
 var createOrder = function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
     var new_order, err_1;
     return __generator(this, function (_a) {

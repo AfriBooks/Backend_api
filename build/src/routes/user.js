@@ -10,7 +10,7 @@ const userRoute = (app) => {
     app.post("/user", user_1.createUser);
     app.post("/login", user_1.authenticate);
     app.get("/users", user_1.getUser);
-    app.get("/user/:id", user_1.getSingleUser);
+    app.get("/users/:id", user_1.getSingleUser);
     app.delete("/user/:id");
     app.get('/google', passport_1.default.authenticate('google'));
 };

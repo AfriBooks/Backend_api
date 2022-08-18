@@ -6,8 +6,8 @@ const order_1 = require("../controllers/order");
 const upload_1 = require("../middleware/upload");
 const bookRoutes = (app) => {
     app.get("/books", book_1.getBooks);
-    app.get('/orders', order_1.getOrders);
-    app.post('/orders', order_1.createOrder);
+    app.get("/user/orders", order_1.getOrders);
+    app.post("/user/orders", order_1.createOrder);
     app.post("/books", upload_1.uploadImg, book_1.addBook);
     app.get("/books/:id", book_1.getSingleBook);
     app.get("/books/categories/:category", book_1.getBooksByCategories);
@@ -16,6 +16,7 @@ const bookRoutes = (app) => {
     app.patch("/books/:id/reviews", book_1.review);
     app.patch("/books/:id/reviews/:reviewId/reply", verifyAuth_1.verifyAuthToken, book_1.reviewReply);
     app.get("/books/:id/reviews", book_1.getBookReviews);
-    app.get('/users/:id/books', book_1.getBooksByUser);
+    app.get("/users/:id/books", book_1.getBooksByUser);
+    app.get("/users/:id/orders", order_1.getOrdersByUser);
 };
 exports.default = bookRoutes;
