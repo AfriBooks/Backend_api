@@ -166,7 +166,8 @@ var getBooksByCategories = function (req, res) { return __awaiter(void 0, void 0
                 _a.label = 1;
             case 1:
                 _a.trys.push([1, 3, , 4]);
-                return [4 /*yield*/, book_1["default"].find({}).then(function (result) {
+                return [4 /*yield*/, book_1["default"].find({})
+                        .then(function (result) {
                         var categories = [];
                         for (var book in result) {
                             if (result[book].genre.toLowerCase() === category) {
@@ -324,7 +325,7 @@ var review = function (req, res) { return __awaiter(void 0, void 0, void 0, func
                 }
                 reviewsArray = book.reviews;
                 data = {
-                    user: user,
+                    username: user.name,
                     review: review
                 };
                 reviewsArray.push(data);
@@ -405,9 +406,11 @@ var getBookReviews = function (req, res) { return __awaiter(void 0, void 0, void
                 }
                 reviews = book.reviews;
                 if (reviews.length <= 0) {
-                    return [2 /*return*/, res.status(200).json("This book has no reviews yet")];
+                    return [2 /*return*/, res
+                            .status(400)
+                            .json({ message: "This book has no reviews yet" })];
                 }
-                res.json(reviews);
+                res.status(200).json(reviews);
                 return [3 /*break*/, 4];
             case 3:
                 error_9 = _a.sent();

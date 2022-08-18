@@ -41,22 +41,25 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 exports.__esModule = true;
 exports.createOrder = exports.getOrders = void 0;
 var order_1 = __importDefault(require("../models/order"));
-// const tracker = require("delivery-tracker");
-// const courier = tracker.courier(tracker.COURIER.FEDEX.fedex);
+var randomInterval = function () {
+    return Math.floor(Math.random() * (6000 - 1000 + 1) + 1000);
+};
+var orders;
 var getOrders = function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
-    var orders, error_1;
+    var result, error_1;
     return __generator(this, function (_a) {
         switch (_a.label) {
             case 0:
                 _a.trys.push([0, 2, , 3]);
                 return [4 /*yield*/, order_1["default"].find({})];
             case 1:
-                orders = _a.sent();
-                if (!orders.length) {
+                result = _a.sent();
+                if (!result.length) {
                     return [2 /*return*/, res
                             .status(202)
                             .json({ message: "No orders in the database" })];
                 }
+                orders = result;
                 return [2 /*return*/, res.status(200).json(orders)];
             case 2:
                 error_1 = _a.sent();
@@ -78,7 +81,7 @@ var createOrder = function (req, res) { return __awaiter(void 0, void 0, void 0,
                     price: req.body.price,
                     user_id: req.body.user_id,
                     delivery_address: req.body.delivery_address,
-                    status: "InfoReceived"
+                    status: "Order placed"
                 };
                 _a.label = 1;
             case 1:

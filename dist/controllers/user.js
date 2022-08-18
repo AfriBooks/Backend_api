@@ -39,10 +39,11 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 exports.__esModule = true;
-exports.deleteUser = exports.getSingleUser = exports.getUser = exports.authenticate = exports.createUser = void 0;
+exports.googleHandler = exports.deleteUser = exports.getSingleUser = exports.getUser = exports.authenticate = exports.createUser = void 0;
 var jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
 var dotenv_1 = __importDefault(require("dotenv"));
 var user_1 = __importDefault(require("../models/user"));
+// import { findAndUpdateUser, getGoogleOauthTokens, getGoogleUser } from "../service/user.service";
 dotenv_1["default"].config();
 var createUser = function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
     var addUser, emailCheck, newUser, error_1;
@@ -107,7 +108,7 @@ var authenticate = function (req, res) { return __awaiter(void 0, void 0, void 0
                     res.cookie("afribook_currentUser", existingUser);
                     token = jsonwebtoken_1["default"].sign({ payload: existingUser }, "".concat(process.env.TOKEN_SECRET), { expiresIn: "2h" });
                     res.cookie("auth_token", token);
-                    res.status(200).json({ token: token, username: existingUser.name });
+                    res.status(200).json({ token: token, name: existingUser.name });
                 }
                 return [3 /*break*/, 3];
             case 2:
@@ -185,3 +186,11 @@ var deleteUser = function (req, res) { return __awaiter(void 0, void 0, void 0, 
     return [2 /*return*/];
 }); }); };
 exports.deleteUser = deleteUser;
+var googleHandler = function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
+    var code;
+    return __generator(this, function (_a) {
+        code = req.query.code;
+        return [2 /*return*/];
+    });
+}); };
+exports.googleHandler = googleHandler;
