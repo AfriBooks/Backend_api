@@ -7,8 +7,10 @@ import main from "./database";
 import bookRoutes from "./routes/book";
 import { userRoute } from "./routes/user";
 import { passRoute } from "./routes/password";
+import dotenv from "dotenv";
 
 // require('./utils/google');
+dotenv.config();
 
 main().catch((err) => console.error(err));
 
