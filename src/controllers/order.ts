@@ -22,6 +22,20 @@ export const getOrders = async (req: Request, res: Response) => {
     }
 };
 
+export const getOrdersByUser = async (req: Request, res: Response) => {
+    const id = req.params.id;
+
+    try {
+        const orders = await Order.find({ user_id: id });
+        if (!orders) {
+            return res.status(400).json("No orders created by this user");
+        }
+        res.status(200).json(orders);
+    } catch (error) {
+        console.error(error);
+    }
+};
+
 export const createOrder = async (req: Request, res: Response) => {
     const new_order = {
         book_id: req.body.book_id,
