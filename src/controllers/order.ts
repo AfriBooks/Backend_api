@@ -5,7 +5,6 @@ const randomInterval = () => {
     return Math.floor(Math.random() * (6000 - 1000 + 1) + 1000);
 };
 
-let statusArray: string[] = [];
 let orders: object[];
 
 export const getOrders = async (req: Request, res: Response) => {
@@ -30,7 +29,7 @@ export const createOrder = async (req: Request, res: Response) => {
         price: req.body.price,
         user_id: req.body.user_id,
         delivery_address: req.body.delivery_address,
-        status: "pending",
+        status: "Order placed",
     };
     try {
         await Order.create(new_order)
